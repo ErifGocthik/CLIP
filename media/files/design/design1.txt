@@ -1,0 +1,7 @@
+text:white
+background:4.jpg
+animation:pulse infinity 3s ease-in
+icons:white
+general_color:#000000
+card_bg:(255, 255, 255, 0.5)
+btn_clr:#4d1616

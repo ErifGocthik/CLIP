@@ -1,0 +1,133 @@
+{% extends 'root.html' %}
+{% load static %}
+{% block js %}
+    <script src="{% static 'js/dynamic.js' %}"></script>
+    <script src="{% static 'js/uploadImages.js' %}"></script>
+    <script src="{% static 'js/detailImage.js' %}"></script>
+    <script src="{% static 'js/addInArchives.js' %}"></script>
+    <script src="{% static 'js/download.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="content-images">
+        <div class="size-disk" style="background-color: {{ general_color }}">
+            <div class="progress" style="width: {{ natural_size }}%"></div>
+        </div>
+        <div class="size">
+            <p>{{ global_size }} / 20Гб</p>
+        </div>
+        <div class="search-filter">
+            <form action="." method="get" id="images-upload-form">
+                <label for="nero">
+                    <input type="checkbox" name="nero" value="нейро" {% if nero %} checked {% endif %}>
+                    <p>нейро</p>
+                </label>
+                <input type="search" name="search" placeholder=" Поиск по названию" value="{% if search_text != None %}{{ search_text }}{% else %}{% endif %}"
+                       style="background-image: url('{% static 'icons/magnifying-glass.png' %}')">
+
+                <div class="modal_settings">
+                    {% if fBs %}
+                        <label for="filt">
+                            <input checked type="radio" name="filt" value="Bs"/>
+                            От большего к меньшему
+                        </label>
+                        <label for="filt">
+                            <input type="radio" name="filt" value="Sb"/>
+                            От меньшего к большему
+                        </label>
+                    {% elif fSb %}
+                        <label for="filt">
+                            <input type="radio" name="filt" value="Bs"/>
+                            От большего к меньшему
+                        </label>
+                        <label for="filt">
+                            <input checked type="radio" name="filt" value="Sb"/>
+                            От меньшего к большему
+                        </label>
+                    {% else %}
+                        <label for="filt">
+                            <input type="radio" name="filt" value="Bs"/>
+                            От большего к меньшему
+                        </label>
+                        <label for="filt">
+                            <input   type="radio" name="filt" value="Sb"/>
+                            От меньшего к большему
+                        </label>
+                    {% endif %}
+                </div>
+                <input type="submit" value="Поиск">
+            </form>
+            <p style="background-image: url('{% static 'icons/setting.png' %}'); {% if general_color == '#000000' %}filter: invert(1);{% endif %}" class="settings"></p>
+            <p style="background-image: url('{% static 'icons/downloads.png' %}'); {% if general_color == '#000000' %}filter: invert(1);{% endif %}" class="upload"></p>
+        </div>
+        <h3>{{ result }}</h3>
+        <div class="images">
+            {% for image in images %}
+                <div class="card id_{{ image.pk }}"
+                     style="background-image: url('{{ image.image.url }}'), linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4));
+                             border: 10px solid {{ general_color }}!important">
+                    <div class="img-info">
+                        {#                        <p>{{ image.width }} × {{ image.height }} <img src="{% static 'icons/maximize.png' %}" alt="">#}
+                        {#                        </p>#}
+                        {#                        <p>{{ image.get_size }} <img src="{% static 'icons/pie-chart.png' %}" alt=""></p>#}
+                    </div>
+                    <div class="title"><p style="word-break: break-all; width: 100%">{{ image.name }}</p></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal-window">
+        <div class="window">
+            <form action="." method="post" enctype="multipart/form-data">
+                <label for="file-image">
+                    {% csrf_token %}
+                    <p>
+                        <input type="file" name="file-image" accept="image/*" multiple class="files">
+                    </p>
+                    <p><input type="submit" value="Загрузить" class="upload-btn"></p>
+                </label>
+            </form>
+        </div>
+    </div>
+    <div class="modal_window_image_detail_id">
+        <div class="image_menu">
+            <div class="back"><img src="{% static 'icons/arrow-left_icon-icons.com_72376.png' %}" alt=""></div>
+            <div class="options">
+                <div class="share">
+                    <img src="{% static 'icons/sharing_share_icon_124236.png' %}" alt="">
+                </div>
+                <div class="download">
+                    <img src="{% static 'icons/downloads.png' %}" alt="">
+                </div>
+                <div>
+                    <img src="{% static 'icons/favourites-star-outline-interface-symbol_icon-icons.com_73254.png' %}"
+                         alt="">
+                </div>
+                <div class="archive-btn-add">
+                    <img src="{% static 'icons/Архив-иконка.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="window_image_detail_id">
+            <img src="{% static 'icons/YsLK_igrOu0.jpg' %}" alt="">
+        </div>
+    </div>
+    <div class="modal_window_add_in_archive">
+        <div class="archives">
+            {% for archive in archives %}
+                <div class="archive id_{{ archive.pk }}">
+                    <div class="img"
+                         style="background-image: url('{{ archive.images.last.image.url }}'); background-size: 200%; background-position: center"></div>
+                    <div class="content">
+                        <p>{{ archive.name }}</p>
+                        <p>{{ archive.images.count }}</p>
+                    </div>
+                </div>
+                {% if archives.count > 1 %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+            <button class="accept-btn">Подтвердить</button>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+text:black
+background:none
+animation:none
+icons:black
+general_color:#ffffff
+card_bg:(255, 255, 255, 0.5)
+btn_clr:#9decff

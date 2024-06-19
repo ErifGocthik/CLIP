@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/cloud.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+    <script src="{% static 'js/jQuery.js' %}"></script>
+    <script src="{% static 'js/passiveNavigationSlider.js' %}"></script>
+    {% block js %}
+    {% endblock %}
+    <style>
+        .content {
+        {% if background == 'none' %}
+            background: #f3f3f3;
+        {% else %}
+            background: linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.6)), url("static/images/{{ background }}");
+            background-position: center;
+            background-size: 110%;
+            background-repeat: repeat;
+        {% endif %}
+        }
+
+        body * {
+            color: {{ text }};
+        }
+
+        input {
+            background-color: {{ general_color }};
+        }
+
+        .navigation a {
+        {% if icons == 'white' %}
+            filter: invert(100%) !important;
+        {% else %}
+            filter: invert(0) !important;
+        {% endif %}
+        }
+
+        .search-filter form input[type=search] {
+            background-color: {{ general_color }};
+
+            color: {{ text }};
+        }
+
+        .search-filter form input[type=submit] {
+            background-color: {{ btn_clr }};
+        }
+
+        .register-form p input {
+        {% if general_color == '#000000' %}
+            background: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)) !important;
+        {% endif %}
+        }
+
+        .login-form p input {
+        {% if general_color == '#000000' %}
+            background: linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06)) !important;
+        {% endif %}
+        }
+    </style>
+</head>
+<body>
+<div class="navigation">
+    {% if user.is_authenticated %}
+        <a href="{% url 'authorization:logout' %}" class="nav-btn"><img
+                src="{% static 'icons/4115235-exit-logout-sign-out_114030.png' %}" alt=""></a>
+    {% else %}
+        <a href="" class="nav-btn" style="pointer-events: none; transform: translateX(-40px)"><img src="" alt=""></a>
+    {% endif %}
+    {#        <a href="#" class="nav-btn"><img src="" alt=""></a>#}
+    <a href="{% url 'main:archives' %}" class="nav-btn"><img src="{% static 'icons/Архив-иконка.png' %}" alt=""></a>
+    <a href="{% url 'main:main' %}" class="nav-btn href-active"><img src="{% static 'icons/Облако-иконка.png' %}"
+                                                                     alt=""></a>
+    <a href="{% url 'authorization:login' %}" class="nav-btn"><img src="{% static 'icons/log_out_icon_153555.png' %}"
+                                                                   alt=""></a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'main:info' %}" class="nav-btn"><img src="{% static 'icons/icons8-info-100.png' %}" alt=""></a>
+    {% else %}
+        <a href="#" class="nav-btn" style="transform: translateX(-55px)"><img src="" alt=""></a>
+    {% endif %}
+    {#        <a href="#" class="nav-btn"><img src="{% static 'icons/Design-иконка.png' %}" alt=""></a>#}
+</div>
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'root.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+    <div class="form-label">
+        <form action="." method="post" enctype="multipart/form-data" class="login-form" style="background-color: {{ general_color }}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <a href="{% url 'authorization:registration' %}" style="text-decoration: underline">Нет аккаунта? зарегистрируйтесь</a>
+            <a href="{% url 'social:begin' 'vk-oauth2' %}">
+                <img src="{% static 'icons/icons8-vk-в-круге-48.png' %}" alt="vk-soc">
+            </a>
+            <input type="submit" value="Войти" style="background: {{ btn_clr }}!important">
+        </form>
+    </div>
+{% endblock %}

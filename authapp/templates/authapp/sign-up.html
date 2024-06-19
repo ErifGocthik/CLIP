@@ -1,0 +1,10 @@
+{% extends 'root.html' %}
+{% block content %}
+    <div class="form-label">
+        <form action="." method="post" enctype="multipart/form-data" class="register-form" style="background-color: {{ general_color }}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Регистрация" style="background: {{ btn_clr }}!important">
+        </form>
+    </div>
+{% endblock %}

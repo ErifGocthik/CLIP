@@ -1,0 +1,57 @@
+{% extends 'root.html' %}
+{% load static %}
+{% block title %}
+    Архивы
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/archiveHref.js' %}"></script>
+    <script src="{% static 'js/dynamic.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="content-archives">
+        <div class="search-filter">
+            <form action="." method="get" id="images-upload-form">
+                <input type="search" name="search" placeholder=" Поиск по названию"
+                       style="background-image: url('{% static 'icons/magnifying-glass.png' %}')">
+                <input type="submit" value="Поиск">
+            </form>
+            <p style="background-image: url('{% static 'icons/setting.png' %}')"></p>
+            <p style="background-image: url('{% static 'icons/downloads.png' %}')" class="upload"></p>
+            <p style="background-image: url('{% static 'icons/add_circle_create_expand_new_plus_icon_123218.png' %}'); background-size: 80%"
+               class="add-archives"></p>
+        </div>
+        <div class="archives">
+            {% for archive in archives %}
+                <div class="archive archiveId_{{ archive.pk }}">
+                    <div class="img" style="background-image: url('{{ archive.images.last.image.url }}'); background-size: 200%"></div>
+                    <div class="content">
+                        <p class="title">{{ archive.name }}</p>
+                        <p class="size">Изображения: {{ archive.images.count }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal-window">
+        <div class="window">
+            <form action="." method="post" enctype="multipart/form-data">
+                <label for="file-image">
+                    {% csrf_token %}
+                    <p>
+                        <input type="file" name="file-image" accept="image/*" multiple class="files">
+                    </p>
+                    <p><input type="submit" value="Загрузить" class="upload-btn"></p>
+                </label>
+            </form>
+        </div>
+    </div>
+    <div class="modal-window-archives">
+        <div class="window-archives">
+            <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Создать">
+            </form>
+        </div>
+    </div>
+{% endblock %}

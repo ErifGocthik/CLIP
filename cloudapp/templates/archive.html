@@ -1,0 +1,63 @@
+{% extends 'root.html' %}
+{% load static %}
+{% block js %}
+    <script src="{% static 'js/dynamicArchives.js' %}"></script>
+    <script src="{% static 'js/uploadImages.js' %}"></script>
+    <script src="{% static 'js/detailImage.js' %}"></script>
+    <script src="{% static 'js/addInArchives.js' %}"></script>
+    <script src="{% static 'js/removeFromArchive.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="content-images">
+        <div class="images">
+            {% for image in images %}
+                <div class="card id_{{ image.pk }}"
+                     style="background-image: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.4)), url('{{ image.image.url }}')">
+                    <div class="img-info" style="color: white">
+                        <p style="color: white!important">{{ image.width }} × {{ image.height }} <img src="{% static 'icons/maximize.png' %}" alt="">
+                        </p>
+                        <p style="color: white!important">{{ image.get_size }} <img src="{% static 'icons/pie-chart.png' %}" alt=""></p>
+                    </div>
+                    <div class="title"><p style="word-break: break-all; width: 100%">{{ image.name }}</p></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal-window">
+        <div class="window">
+            <form action="." method="post" enctype="multipart/form-data">
+                <label for="file-image">
+                    {% csrf_token %}
+                    <p>
+                        <input type="file" name="file-image" accept="image/*" multiple class="files">
+                    </p>
+                    <p><input type="submit" value="Загрузить" class="upload-btn"></p>
+                </label>
+            </form>
+        </div>
+    </div>
+    <div class="modal_window_image_detail_id">
+        <div class="image_menu">
+            <div class="back"><img src="{% static 'icons/arrow-left_icon-icons.com_72376.png' %}" alt=""></div>
+            <div class="options">
+                <div class="share">
+                    <img src="{% static 'icons/sharing_share_icon_124236.png' %}" alt="">
+                </div>
+                <div>
+                    <img src="{% static 'icons/trash.png' %}" alt="">
+                </div>
+                <div class="remove_btn">
+                    <img src="{% static 'icons/remove.png' %}" alt="">
+                </div>
+
+                <div>
+                    <img src="{% static 'icons/favourites-star-outline-interface-symbol_icon-icons.com_73254.png' %}"
+                         alt="">
+                </div>
+            </div>
+        </div>
+        <div class="window_image_detail_id">
+            <img src="" alt="">
+        </div>
+    </div>
+{% endblock %}
